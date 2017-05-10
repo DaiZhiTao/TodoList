@@ -1,0 +1,214 @@
+/*
+ *  base style
+ */
+body{
+    font-size:12px;
+}
+
+h3{
+    font-size:1.5rem;
+    text-align: center;
+}
+
+i{
+    font-style: normal;
+}
+
+/*
+ *  clear default padding and margin
+ */
+
+body,ul{
+    padding: 0;
+    margin: 0;
+}
+/*
+ * clear ul default list-style
+ */
+ul{
+    list-style: none;
+    font-size:1.2rem;
+}
+
+/*
+ * clear input outline
+ */
+input{
+    outline: none;
+}
+
+/*
+ *  container style
+ */
+
+.block{
+    width: 1200px;
+    padding:10px;
+    box-sizing: border-box;
+}
+
+/*
+ * center block
+ */
+.center-block{
+    margin:0 auto;
+}
+
+/*
+ * box style
+ */
+
+.box{
+    width:800px;
+    overflow: hidden;
+}
+
+/*
+ *  input box style
+ */
+
+.input-box{
+    position: relative;
+    width:800px;
+    margin-top:30px;
+    margin-bottom:40px;
+    overflow: hidden;
+}
+
+/*
+ * input style
+ */
+.item-input{
+    width: 776px;
+    height: 30px;
+    line-height:30px;
+    border: 3px solid #5ca0af;
+    border-radius: 5px;
+    padding: 6px 9px;
+    font-size: 1.2rem;
+}
+
+/*
+ *  button style
+ */
+.add-btn{
+    position: absolute;
+    right: 3px;
+    top: 0;
+    height: 48px;
+    line-height:48px;
+    padding: 0 10px;
+    border:none;
+    border-radius: 0 2px 2px 0;
+    background-color: #5ca0af;
+    color: #fff;
+    cursor: pointer;
+}
+
+/*
+ * common style
+ */
+
+.unfinished,.finished{
+    margin-right:30px;
+}
+
+.unfinished{
+    color: #5ca0af;
+}
+
+.finished{
+    margin-left:25px;
+    color: #d42405;
+}
+
+.finished+span{
+    text-decoration: line-through;
+}
+
+.items-ready,.items-finish{
+    width: 399px;
+    padding: 10px 6px;
+    box-sizing: border-box;
+    min-height: 400px;
+}
+
+.items-ready li,.items-finish li{
+    background: rgba(255,255,255,.9);
+    position: relative;
+    overflow: hidden;
+    margin-bottom:16px;
+    border-bottom: 1px dashed #e1e1e1;
+
+}
+
+/*
+ * mark time style
+ */
+
+.markTime{
+    font-size:.8rem !important;
+    color: #999 !important;
+    margin-right:16px;
+    text-align: right;
+}
+
+.markTime>i{
+    margin-left:6px;
+}
+
+/*
+ * things ready to do
+ */
+.items-ready{
+    float: left;
+    position: relative;
+}
+
+.items-ready::before{
+    position: absolute;
+    content: '';
+    width: 2px;
+    height: 100%;
+    right:2px;
+    background: #999;
+}
+/*
+ * things has been finished
+ */
+.items-finish{
+    float: right;
+}
+
+
+
+/*
+ *   animation
+ */
+.bounce-leave {
+    animation:bounce-up .5s;
+}
+.bounce-enter{
+    animation: bounce-down .5s;
+}
+
+@keyframes bounce-down {
+    0%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(50px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce-up {
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}

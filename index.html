@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+   <div class="block center-block" id="app">
+       <div class="input-box center-block">
+           <input  type="text" id="in" placeholder="something need to finish?" @keyup.enter="addItem"  class="item-input" v-model="thing">
+           <button class="add-btn" @click="addItem">Write Down</button>
+       </div>
+       <div class="box center-block">
+           <div class="items-ready">
+               <h3>Unfinished</h3>
+               <ul>
+                   <ready-item v-if="item.show" transition="bounce" v-for="item in thingsNotFinish" :thing="item.what" :time="item.time" :class="item.class" :item="item"></ready-item>
+               </ul>
+           </div>
+           <div class="items-finish">
+               <h3>Finished</h3>
+               <ul>
+                   <finish-item v-for="item in thingsFinished" v-if="item.show" transition="bounce" :fthing="item.what" :time="item.time" :ftime="item.finishTime" :class="item.class"></finish-item>
+               </ul>
+           </div>
+       </div>
+   </div>
+   <template id="toDo">
+       <li>
+           <i class='fa fa-paper-plane unfinished'></i>{{thing}}
+           <p :class='class'>create at :{{time|time}}<i @click="finish(item)" class="fa fa-trash"></i></p>
+       </li>
+   </template>
+   <template id="Done">
+       <li>
+           <i class='fa fa-thumbs-up finished'></i>{{fthing}}
+           <p :class='class'>create at :{{time|time}}</p>
+           <p :class="class">finished at:{{ftime|time}}</p>
+       </li>
+   </template>
+<script src="js/vue.js"></script>
+<script>
+
+    var thingsNotFinish =  localStorage.getItem('thingsNotFinish')?JSON.parse(localStorage.getItem('thingsNotFinish')):[];
+    var thingsFinished = localStorage.getItem('thingsFinished')?JSON.parse(localStorage.getItem('thingsFinished')):[];
+
+// custom component
+    Vue.component('ready-item',{
+        template:  document.getElementById('toDo').innerHTML,
+        props:['thing','time','class','item'],
+        methods:{
+            finish:function (item) {
+                //  get index of the item which is clicked
+                var index = thingsNotFinish.indexOf(item);
+
+                //  change disappear
+                thingsNotFinish[index].show = false;
+
+                //  delete from thingsNotFinish
+                thingsNotFinish.splice(index,1);
+
+                //  change visible
+                item.show = true;
+
+                //  add finish time
+                item.finishTime = Date.now();
+
+                //  push into thingsFinshed
+                thingsFinished.push(item);
+
+
+                localStorage.setItem('thingsFinished',JSON.stringify(thingsFinished));
+            }
+        }
+    });
+
+    Vue.component('finish-item',{
+        template:  document.getElementById('Done').innerHTML,
+        props:['fthing','time','ftime','class']
+    });
+
+//  custom time filter
+//  change string to date format
+
+    Vue.filter('time',function (val) {
+        var date = new Date(val);
+        return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+(Number(date.getMinutes())<10?'0'+date.getMinutes():date.getMinutes());
+    });
+
+//    animation
+    Vue.transition('bounce',{
+        type:'animation'
+    });
+
+//    create a instance
+    var app = new Vue({
+        el:'#app',
+        data:{
+            thing:'',
+            thingsNotFinish:thingsNotFinish,
+            thingsFinished:thingsFinished
+        },
+        methods:{
+            //  add item to thingsNotfinish
+            addItem:function(){
+
+                var newThing = {
+                    'what':this.thing,
+                    'show':true,
+                    'time':Date.now(),
+                    'class':'markTime'
+                };
+
+                this.thingsNotFinish.push(newThing);
+                this.thing = '';
+
+                localStorage.setItem('thingsNotFinish',JSON.stringify(thingsNotFinish));
+            },
+            //  delete form thingsNotFinish and push it into thingsFinished
+            finish:function (item) {
+                //  get index of the item which is clicked
+                var index = this.thingsNotFinish.indexOf(item);
+
+                //  change disappear
+                this.thingsNotFinish[index].show = false;
+
+                //  delete from thingsNotFinish
+                this.thingsNotFinish.splice(index,1);
+
+                //  change visible
+                item.show = true;
+
+                //  add finish time
+                item.finishTime = Date.now();
+
+                //  push into thingsFinshed
+                this.thingsFinished.push(item);
+            }
+        }
+    });
+</script>
+</body>
+</html>
